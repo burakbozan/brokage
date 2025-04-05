@@ -75,7 +75,7 @@ public class OrderServiceTest {
         assertEquals(price, createdOrder.getPrice());
         assertEquals(Status.PENDING, createdOrder.getStatus());
         assertNotNull(createdOrder.getCreateDate());
-        assertEquals(10000L - (size * price.longValue()), tryAsset.usableSize());
+        assertEquals(10000L - (size * price.longValue()), tryAsset.getUsableSize());
         verify(orderRepository, times(1)).save(any(Order.class));
         verify(assetRepository, times(1)).save(tryAsset);
     }

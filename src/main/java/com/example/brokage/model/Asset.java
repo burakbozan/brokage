@@ -21,7 +21,7 @@ public class Asset {
     public Asset() {
     }
 
-    public Long id() {
+    public Long getId() {
         return id;
     }
 
@@ -29,7 +29,7 @@ public class Asset {
         this.id = id;
     }
 
-    public Long customerId() {
+    public Long getCustomerId() {
         return customerId;
     }
 
@@ -37,7 +37,7 @@ public class Asset {
         this.customerId = customerId;
     }
 
-    public String assetName() {
+    public String getAssetName() {
         return assetName;
     }
 
@@ -45,7 +45,7 @@ public class Asset {
         this.assetName = assetName;
     }
 
-    public Long size() {
+    public Long getSize() {
         return size;
     }
 
@@ -53,7 +53,7 @@ public class Asset {
         this.size = size;
     }
 
-    public Long usableSize() {
+    public Long getUsableSize() {
         return usableSize;
     }
 

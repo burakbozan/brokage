@@ -35,16 +35,16 @@ public class OrderService {
         Asset orderAsset = assetRepository.findByCustomerIdAndAssetName(customerId, assetName);
 
         if (side == Side.BUY) {
-            if (tryAsset == null || tryAsset.usableSize() < size.longValue() * price.longValue()) {
+            if (tryAsset == null || tryAsset.getUsableSize() < size.longValue() * price.longValue()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient TRY balance.");
             }
-            tryAsset.setUsableSize(tryAsset.usableSize() - size.longValue() * price.longValue());
+            tryAsset.setUsableSize(tryAsset.getUsableSize() - size.longValue() * price.longValue());
             assetRepository.save(tryAsset);
         } else if (side == Side.SELL) {
-            if (orderAsset == null || orderAsset.usableSize() < size) {
+            if (orderAsset == null || orderAsset.getUsableSize() < size) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient " + assetName + " balance.");
             }
-            orderAsset.setUsableSize(orderAsset.usableSize() - size);
+            orderAsset.setUsableSize(orderAsset.getUsableSize() - size);
             assetRepository.save(orderAsset);
         }
 
@@ -77,12 +77,12 @@ public class OrderService {
 
         if (order.getOrderSide() == Side.BUY) {
             if (tryAsset != null) {
-                tryAsset.setUsableSize(tryAsset.usableSize() + order.getSize() * order.getPrice().longValue());
+                tryAsset.setUsableSize(tryAsset.getUsableSize() + order.getSize() * order.getPrice().longValue());
                 assetRepository.save(tryAsset);
             }
         } else if (order.getOrderSide() == Side.SELL) {
             if (orderAsset != null) {
-                orderAsset.setUsableSize(orderAsset.usableSize() + order.getSize());
+                orderAsset.setUsableSize(orderAsset.getUsableSize() + order.getSize());
                 assetRepository.save(orderAsset);
             }
         }
@@ -110,7 +110,7 @@ public class OrderService {
         Asset orderAsset = assetRepository.findByCustomerIdAndAssetName(customerId, assetName);
 
         if (side == Side.BUY) {
-            if (tryAsset == null || tryAsset.size() < size.longValue() * price.longValue()) {
+            if (tryAsset == null || tryAsset.getSize() < size.longValue() * price.longValue()) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient TRY balance for matching.");
             }
             if (orderAsset == null) {
@@ -120,13 +120,13 @@ public class OrderService {
                 orderAsset.setSize(0L);
                 orderAsset.setUsableSize(0L);
             }
-            tryAsset.setSize(tryAsset.size() - size.longValue() * price.longValue());
-            orderAsset.setSize(orderAsset.size() + size);
-            orderAsset.setUsableSize(orderAsset.usableSize() + size);
+            tryAsset.setSize(tryAsset.getSize() - size.longValue() * price.longValue());
+            orderAsset.setSize(orderAsset.getSize() + size);
+            orderAsset.setUsableSize(orderAsset.getUsableSize() + size);
             assetRepository.save(tryAsset);
             assetRepository.save(orderAsset);
         } else if (side == Side.SELL) {
-            if (orderAsset == null || orderAsset.size() < size) {
+            if (orderAsset == null || orderAsset.getSize() < size) {
                 throw new ResponseStatusException(HttpStatus.BAD_REQUEST, "Insufficient " + assetName + " balance for matching.");
             }
             if (tryAsset == null) {
@@ -136,9 +136,9 @@ public class OrderService {
                 tryAsset.setSize(0L);
                 tryAsset.setUsableSize(0L);
             }
-            orderAsset.setSize(orderAsset.size() - size);
-            tryAsset.setSize(tryAsset.size() + size.longValue() * price.longValue());
-            tryAsset.setUsableSize(tryAsset.usableSize() + size.longValue() * price.longValue());
+            orderAsset.setSize(orderAsset.getSize() - size);
+            tryAsset.setSize(tryAsset.getSize() + size.longValue() * price.longValue());
+            tryAsset.setUsableSize(tryAsset.getUsableSize() + size.longValue() * price.longValue());
             assetRepository.save(tryAsset);
             assetRepository.save(orderAsset);
         }
